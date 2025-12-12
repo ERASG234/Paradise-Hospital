@@ -13,7 +13,7 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        :root {
+ :root {
             --primary: #374151;
             --primary-dark: #1f2937;
             --secondary: #4b5563;
@@ -32,7 +32,7 @@
             --chart-5: #1f2937;
         }
 
-        .dark {
+  .dark {
             --bg-light: #111827;
             --bg-card: #1f2937;
             --text-dark: #f9fafb;
