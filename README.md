@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,999 +6,523 @@
     <title>Paradise Hospital - Management System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            font-family: 'Poppins', sans-serif;
+        * { font-family: 'Poppins', sans-serif; box-sizing: border-box; }
+        :root {
+            --primary: #374151; --primary-dark: #1f2937; --secondary: #4b5563;
+            --accent: #6b7280; --bg: #f3f4f6; --card: #ffffff; --text: #111827;
+            --border: #e5e7eb; --success: #059669; --warning: #d97706; --danger: #dc2626;
         }
-
- :root {
-            --primary: #374151;
-            --primary-dark: #1f2937;
-            --secondary: #4b5563;
-            --accent: #6b7280;
-            --bg-light: #f3f4f6;
-            --bg-card: #ffffff;
-            --text-dark: #111827;
-            --border: #d1d5db;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --chart-1: #374151;
-            --chart-2: #6b7280;
-            --chart-3: #9ca3af;
-            --chart-4: #4b5563;
-            --chart-5: #1f2937;
-        }
-
-  .dark {
-            --bg-light: #111827;
-            --bg-card: #1f2937;
-            --text-dark: #f9fafb;
-            --border: #374151;
-        }
-
-        body {
-            background: linear-gradient(135deg, var(--bg-light) 0%, #e5e7eb 100%);
-            color: var(--text-dark);
-            min-height: 100vh;
-        }
-
-        .dark body {
-            background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
-        }
-
-        .card {
-            background: var(--bg-card);
-            border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
-            color: white;
-            border: none;
-            animation: slideIn 0.5s ease forwards;
-            opacity: 0;
-        }
-
-        .stat-card:nth-child(1) { animation-delay: 0.1s; background: linear-gradient(135deg, #374151 0%, #4b5563 100%); }
-        .stat-card:nth-child(2) { animation-delay: 0.2s; background: linear-gradient(135deg, #4b5563 0%, #6b7280 100%); }
-        .stat-card:nth-child(3) { animation-delay: 0.3s; background: linear-gradient(135deg, #1f2937 0%, #374151 100%); }
-        .stat-card:nth-child(4) { animation-delay: 0.4s; background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%); }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .btn {
-            padding: 0.5rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: scale(1.05);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #059669;
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-        }
-
-        .nav-item {
-            padding: 1rem 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .nav-item:hover {
-            background: rgba(6, 182, 212, 0.1);
-            border-left-color: var(--primary);
-        }
-
-        .nav-item.active {
-            background: rgba(6, 182, 212, 0.15);
-            border-left-color: var(--primary);
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            background: var(--bg-card);
-            color: var(--text-dark);
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-
-        th {
-            background: var(--primary);
-            color: white;
-            padding: 1rem;
-            text-align: left;
-            font-weight: 600;
-        }
-
-        th:first-child {
-            border-top-left-radius: 8px;
-        }
-
-        th:last-child {
-            border-top-right-radius: 8px;
-        }
-
-        td {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        tr:hover {
-            background: rgba(6, 182, 212, 0.05);
-        }
-
-        .badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            display: inline-block;
-        }
-
-        .badge-success {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .badge-warning {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .badge-danger {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .badge-info {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .dark .badge-success {
-            background: #065f46;
-            color: #d1fae5;
-        }
-
-        .dark .badge-warning {
-            background: #92400e;
-            color: #fef3c7;
-        }
-
-        .dark .badge-danger {
-            background: #991b1b;
-            color: #fee2e2;
-        }
-
-        .dark .badge-info {
-            background: #1e40af;
-            color: #dbeafe;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(4px);
-        }
-
-        .modal.active {
-            display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-content {
-            background: var(--bg-card);
-            padding: 2rem;
-            border-radius: 16px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .search-box {
-            position: relative;
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary);
-        }
-
-        .search-box input {
-            padding-left: 3rem;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                position: fixed;
-                left: -100%;
-                top: 0;
-                height: 100vh;
-                z-index: 999;
-                transition: left 0.3s ease;
-            }
-
-            .sidebar.active {
-                left: 0;
-            }
-
-            .mobile-menu-btn {
-                display: block !important;
-            }
-        }
-
-        .login-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #1f2937 0%, #374151 50%, #4b5563 100%);
-            padding: 2rem;
-        }
-
-        .login-card {
-            background: white;
-            border-radius: 24px;
-            padding: 3rem;
-            max-width: 450px;
-            width: 100%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: loginSlideIn 0.6s ease;
-        }
-
-        @keyframes loginSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .login-logo {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            font-size: 2.5rem;
-            color: white;
-            box-shadow: 0 10px 30px rgba(55, 65, 81, 0.4);
-        }
-
-        .app-container {
-            display: none;
-        }
-
-        .app-container.active {
-            display: flex;
-        }
-
-        .error-message {
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 0.75rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            display: none;
-            animation: shake 0.3s ease;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
+        .dark { --bg: #111827; --card: #1f2937; --text: #f9fafb; --border: #374151; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; }
+        .card { background: var(--card); border-radius: 12px; border: 1px solid var(--border); }
+        .btn { padding: 0.5rem 1rem; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: none; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-secondary { background: var(--secondary); color: white; }
+        input, select, textarea { width: 100%; padding: 0.625rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--text); font-size: 16px; }
+        input:focus, select:focus { outline: none; border-color: var(--primary); }
+        .nav-tab { padding: 0.75rem 1rem; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; white-space: nowrap; font-size: 0.875rem; }
+        .nav-tab:hover { background: rgba(55,65,81,0.1); }
+        .nav-tab.active { border-bottom-color: var(--primary); font-weight: 600; background: rgba(55,65,81,0.1); }
+        .section { display: none; }
+        .section.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .stat-card { background: linear-gradient(135deg, #374151, #4b5563); color: white; padding: 1.5rem; border-radius: 12px; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: var(--card); padding: 1.5rem; border-radius: 12px; max-width: 500px; width: 90%; max-height: 85vh; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: var(--primary); color: white; padding: 0.75rem; text-align: left; font-size: 0.875rem; }
+        td { padding: 0.75rem; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
+        tr:hover { background: rgba(55,65,81,0.05); }
+        .badge { padding: 0.25rem 0.5rem; border-radius: 6px; font-size: 0.75rem; font-weight: 500; }
+        .badge-success { background: #d1fae5; color: #065f46; }
+        .badge-warning { background: #fef3c7; color: #92400e; }
+        .badge-danger { background: #fee2e2; color: #991b1b; }
+        .badge-info { background: #dbeafe; color: #1e40af; }
+        .dark .badge-success { background: #065f46; color: #d1fae5; }
+        .dark .badge-warning { background: #92400e; color: #fef3c7; }
+        .dark .badge-danger { background: #991b1b; color: #fee2e2; }
+        .dark .badge-info { background: #1e40af; color: #dbeafe; }
+        .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1f2937 0%, #374151 100%); }
+        .login-card { background: white; padding: 2.5rem; border-radius: 16px; max-width: 400px; width: 90%; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .app-container { display: none; }
+        .app-container.active { display: block; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--border); }
+        ::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 4px; }
     </style>
 </head>
 <body>
     <!-- Login Screen -->
     <div id="loginScreen" class="login-container">
         <div class="login-card">
-            <div class="login-logo">
-                <i class="fas fa-hospital"></i>
-            </div>
-            <h1 class="text-3xl font-bold text-center mb-2" style="color: #374151;">Paradise Hospital</h1>
-            <p class="text-center text-gray-600 mb-6">Management System</p>
-
-            <div id="loginError" class="error-message">
-                <i class="fas fa-exclamation-circle"></i> Invalid username or password
-            </div>
-
-            <form onsubmit="handleLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block mb-2 font-medium text-gray-700">Username</label>
-                    <div class="relative">
-                        <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2" style="color: #374151;"></i>
-                        <input type="text" id="loginUsername" required style="padding-left: 2.5rem;" placeholder="Enter username">
-                    </div>
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-gradient-to-br from-gray-700 to-gray-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-hospital text-white text-2xl"></i>
                 </div>
-                <div>
-                    <label class="block mb-2 font-medium text-gray-700">Password</label>
-                    <div class="relative">
-                        <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2" style="color: #374151;"></i>
-                        <input type="password" id="loginPassword" required style="padding-left: 2.5rem;" placeholder="Enter password">
-                    </div>
+                <h1 class="text-2xl font-bold text-gray-800">Paradise Hospital</h1>
+                <p class="text-gray-500 text-sm">Management System</p>
+            </div>
+            <div id="loginError" class="bg-red-100 text-red-700 p-3 rounded-lg mb-4 hidden text-sm">
+                <i class="fas fa-exclamation-circle"></i> Invalid credentials
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                    <input type="text" id="loginUsername" required placeholder="Enter username">
                 </div>
-                <button type="submit" class="btn btn-primary w-full" style="margin-top: 1.5rem; padding: 0.875rem;">
-                    <i class="fas fa-sign-in-alt"></i> Login
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="loginPassword" required placeholder="Enter password">
+                </div>
+                <button type="submit" class="btn btn-primary w-full py-3">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Login
                 </button>
             </form>
-
-            <div class="mt-6 pt-6 border-t border-gray-200 text-center text-sm text-gray-500">
-                <p>Powered by <span class="font-semibold" style="color: #374151;">Exalt Consulting</span></p>
-            </div>
+            <p class="text-center text-xs text-gray-400 mt-6">Powered by <span class="font-semibold text-gray-600">Exalt Consulting</span></p>
         </div>
     </div>
 
     <!-- Main Application -->
-    <div id="appContainer" class="app-container flex min-h-screen">
-        <!-- Sidebar -->
-        <div class="sidebar w-64 card rounded-none border-r" style="border-radius: 0;">
-            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                <h1 class="text-2xl font-bold flex items-center gap-2" style="color: var(--primary);">
-                    <i class="fas fa-hospital"></i>
-                    Paradise Hospital
-                </h1>
-                <p class="text-sm text-gray-500 mt-1">Management System</p>
+    <div id="appContainer" class="app-container">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-gray-800 to-gray-700 text-white px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-hospital text-2xl"></i>
+                    <div>
+                        <h1 class="text-lg font-bold">Paradise Hospital</h1>
+                        <p class="text-xs text-gray-300">Management System</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="text-sm hidden sm:block"><i class="fas fa-user mr-1"></i> <span id="loggedUser">Tendai Manjeru</span></span>
+                    <button onclick="toggleDark()" class="btn btn-secondary text-xs"><i class="fas fa-moon"></i></button>
+                    <button onclick="handleLogout()" class="btn btn-danger text-xs"><i class="fas fa-sign-out-alt"></i></button>
+                </div>
             </div>
+        </header>
 
-            <nav class="p-4">
-                <div class="nav-item active" data-section="dashboard">
-                    <i class="fas fa-chart-line"></i>
-                    Dashboard
-                </div>
-                <div class="nav-item" data-section="inventory">
-                    <i class="fas fa-boxes"></i>
-                    Inventory
-                </div>
-                <div class="nav-item" data-section="patients">
-                    <i class="fas fa-user-injured"></i>
-                    Patients
-                </div>
-                <div class="nav-item" data-section="visits">
-                    <i class="fas fa-notes-medical"></i>
-                    Visits
-                </div>
-                <div class="nav-item" data-section="employees">
-                    <i class="fas fa-user-md"></i>
-                    Employees
-                </div>
-            </nav>
-
-            <div class="p-4 mt-auto border-t border-gray-200 dark:border-gray-700">
-                <div class="mb-3 px-2 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                    <p class="text-xs text-gray-600 dark:text-gray-400">Logged in as:</p>
-                    <p class="font-semibold text-sm" id="loggedInUser">Tendai Manjeru</p>
-                </div>
-                <button onclick="toggleDarkMode()" class="btn btn-primary w-full mb-2">
-                    <i class="fas fa-moon"></i> Toggle Theme
-                </button>
-                <button onclick="handleLogout()" class="btn btn-danger w-full">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
+        <!-- Navigation -->
+        <nav class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
+            <div class="flex">
+                <div class="nav-tab active" data-section="dashboard"><i class="fas fa-chart-pie mr-1"></i><span class="hidden sm:inline">Dashboard</span></div>
+                <div class="nav-tab" data-section="inventory"><i class="fas fa-boxes mr-1"></i><span class="hidden sm:inline">Inventory</span></div>
+                <div class="nav-tab" data-section="patients"><i class="fas fa-users mr-1"></i><span class="hidden sm:inline">Patients</span></div>
+                <div class="nav-tab" data-section="admissions"><i class="fas fa-bed mr-1"></i><span class="hidden sm:inline">Admissions</span></div>
+                <div class="nav-tab" data-section="opd"><i class="fas fa-clinic-medical mr-1"></i><span class="hidden sm:inline">OPD</span></div>
+                <div class="nav-tab" data-section="pharmacy"><i class="fas fa-pills mr-1"></i><span class="hidden sm:inline">Pharmacy</span></div>
+                <div class="nav-tab" data-section="childhealth"><i class="fas fa-baby mr-1"></i><span class="hidden sm:inline">Child Health</span></div>
+                <div class="nav-tab" data-section="dentistry"><i class="fas fa-tooth mr-1"></i><span class="hidden sm:inline">Dentistry</span></div>
+                <div class="nav-tab" data-section="transfers"><i class="fas fa-ambulance mr-1"></i><span class="hidden sm:inline">Transfers</span></div>
+                <div class="nav-tab" data-section="employees"><i class="fas fa-user-md mr-1"></i><span class="hidden sm:inline">Staff</span></div>
             </div>
-        </div>
+        </nav>
 
         <!-- Main Content -->
-        <div class="flex-1 p-8">
-            <button class="mobile-menu-btn btn btn-primary mb-4 hidden">
-                <i class="fas fa-bars"></i> Menu
-            </button>
-
-            <!-- Dashboard Section -->
+        <main class="p-4">
+            <!-- Dashboard -->
             <div id="dashboard" class="section active">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-3xl font-bold">Dashboard Overview</h2>
-                    <button onclick="downloadAllData()" class="btn btn-success">
-                        <i class="fas fa-download"></i> Download All Data
-                    </button>
+                    <h2 class="text-2xl font-bold">Dashboard Overview</h2>
+                    <button onclick="downloadAllData()" class="btn btn-success text-sm"><i class="fas fa-download mr-1"></i>Export All</button>
                 </div>
 
                 <!-- Stats Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div class="stat-card card p-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm opacity-90">Total Inventory Items</p>
-                                <h3 class="text-3xl font-bold mt-2" id="stat-inventory">0</h3>
-                            </div>
-                            <i class="fas fa-boxes text-4xl opacity-50"></i>
-                        </div>
-                    </div>
-
-                    <div class="stat-card card p-6" style="background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm opacity-90">Total Patients</p>
-                                <h3 class="text-3xl font-bold mt-2" id="stat-patients">0</h3>
-                            </div>
-                            <i class="fas fa-user-injured text-4xl opacity-50"></i>
-                        </div>
-                    </div>
-
-                    <div class="stat-card card p-6" style="background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm opacity-90">Hospital Visits</p>
-                                <h3 class="text-3xl font-bold mt-2" id="stat-visits">0</h3>
-                            </div>
-                            <i class="fas fa-notes-medical text-4xl opacity-50"></i>
-                        </div>
-                    </div>
-
-                    <div class="stat-card card p-6" style="background: linear-gradient(135deg, #10b981 0%, #34d399 100%);">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm opacity-90">Staff Members</p>
-                                <h3 class="text-3xl font-bold mt-2" id="stat-employees">0</h3>
-                            </div>
-                            <i class="fas fa-user-md text-4xl opacity-50"></i>
-                        </div>
-                    </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
+                    <div class="stat-card"><p class="text-xs opacity-80">Inventory Items</p><p class="text-2xl font-bold" id="stat-inv">0</p></div>
+                    <div class="stat-card" style="background:linear-gradient(135deg,#4b5563,#6b7280)"><p class="text-xs opacity-80">Patients</p><p class="text-2xl font-bold" id="stat-pat">0</p></div>
+                    <div class="stat-card" style="background:linear-gradient(135deg,#1f2937,#374151)"><p class="text-xs opacity-80">Admissions</p><p class="text-2xl font-bold" id="stat-adm">0</p></div>
+                    <div class="stat-card" style="background:linear-gradient(135deg,#6b7280,#9ca3af)"><p class="text-xs opacity-80">OPD Visits</p><p class="text-2xl font-bold" id="stat-opd">0</p></div>
+                    <div class="stat-card" style="background:linear-gradient(135deg,#374151,#4b5563)"><p class="text-xs opacity-80">Pharmacy</p><p class="text-2xl font-bold" id="stat-pharm">0</p></div>
+                    <div class="stat-card" style="background:linear-gradient(135deg,#4b5563,#374151)"><p class="text-xs opacity-80">Staff</p><p class="text-2xl font-bold" id="stat-emp">0</p></div>
                 </div>
 
                 <!-- Charts -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                    <div class="card p-6">
-                        <h3 class="text-xl font-semibold mb-4">Inventory Status</h3>
-                        <canvas id="inventoryChart"></canvas>
-                    </div>
-
-                    <div class="card p-6">
-                        <h3 class="text-xl font-semibold mb-4">Patient Admissions Trend</h3>
-                        <canvas id="admissionsChart"></canvas>
-                    </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+                    <div class="card p-4"><h3 class="font-semibold mb-3">Inventory by Category</h3><canvas id="chartInventory"></canvas></div>
+                    <div class="card p-4"><h3 class="font-semibold mb-3">Monthly Admissions</h3><canvas id="chartAdmissions"></canvas></div>
                 </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="card p-6">
-                        <h3 class="text-xl font-semibold mb-4">Visits by Department</h3>
-                        <canvas id="visitsChart"></canvas>
-                    </div>
-
-                    <div class="card p-6">
-                        <h3 class="text-xl font-semibold mb-4">Employee Distribution</h3>
-                        <canvas id="employeeChart"></canvas>
-                    </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <div class="card p-4"><h3 class="font-semibold mb-3">OPD by Department</h3><canvas id="chartOPD"></canvas></div>
+                    <div class="card p-4"><h3 class="font-semibold mb-3">Staff Distribution</h3><canvas id="chartStaff"></canvas></div>
+                    <div class="card p-4"><h3 class="font-semibold mb-3">Pharmacy Dispensed</h3><canvas id="chartPharmacy"></canvas></div>
                 </div>
             </div>
 
             <!-- Inventory Section -->
             <div id="inventory" class="section">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-3xl font-bold">Inventory Management</h2>
-                    <div class="flex gap-3">
-                        <button onclick="downloadData('inventory')" class="btn btn-success">
-                            <i class="fas fa-download"></i> Export
-                        </button>
-                        <button onclick="openModal('inventoryModal')" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Add Item
-                        </button>
+                <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                    <h2 class="text-2xl font-bold">Inventory Management</h2>
+                    <div class="flex gap-2">
+                        <input type="text" id="searchInv" placeholder="Search..." class="w-48" onkeyup="renderTable('inventory')">
+                        <button onclick="downloadCSV('inventory')" class="btn btn-success text-sm"><i class="fas fa-download"></i></button>
+                        <button onclick="openModal('invModal')" class="btn btn-primary text-sm"><i class="fas fa-plus mr-1"></i>Add</button>
                     </div>
                 </div>
-
-                <div class="card p-6 mb-6">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="inventorySearch" placeholder="Search inventory..." onkeyup="filterTable('inventoryTable', 'inventorySearch')">
-                    </div>
-                </div>
-
-                <div class="card overflow-hidden">
-                    <div style="overflow-x: auto;">
-                        <table id="inventoryTable">
-                            <thead>
-                                <tr>
-                                    <th>Item Name</th>
-                                    <th>Category</th>
-                                    <th>Quantity</th>
-                                    <th>Unit Price</th>
-                                    <th>Supplier</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="inventoryBody">
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="card overflow-x-auto">
+                    <table><thead><tr><th>Item Code</th><th>Name</th><th>Category</th><th>Qty</th><th>Unit</th><th>Min Stock</th><th>Status</th><th>Actions</th></tr></thead><tbody id="invBody"></tbody></table>
                 </div>
             </div>
 
             <!-- Patients Section -->
             <div id="patients" class="section">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-3xl font-bold">Patient Registration & Admissions</h2>
-                    <div class="flex gap-3">
-                        <button onclick="downloadData('patients')" class="btn btn-success">
-                            <i class="fas fa-download"></i> Export
-                        </button>
-                        <button onclick="openModal('patientModal')" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Register Patient
-                        </button>
+                <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                    <h2 class="text-2xl font-bold">Patient Registration</h2>
+                    <div class="flex gap-2">
+                        <input type="text" id="searchPat" placeholder="Search..." class="w-48" onkeyup="renderTable('patients')">
+                        <button onclick="downloadCSV('patients')" class="btn btn-success text-sm"><i class="fas fa-download"></i></button>
+                        <button onclick="openModal('patModal')" class="btn btn-primary text-sm"><i class="fas fa-plus mr-1"></i>Register</button>
                     </div>
                 </div>
-
-                <div class="card p-6 mb-6">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="patientSearch" placeholder="Search patients..." onkeyup="filterTable('patientTable', 'patientSearch')">
-                    </div>
-                </div>
-
-                <div class="card overflow-hidden">
-                    <div style="overflow-x: auto;">
-                        <table id="patientTable">
-                            <thead>
-                                <tr>
-                                    <th>Patient ID</th>
-                                    <th>Name</th>
-                                    <th>Age</th>
-                                    <th>Gender</th>
-                                    <th>Contact</th>
-                                    <th>Admission Date</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="patientBody">
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="card overflow-x-auto">
+                    <table><thead><tr><th>Patient ID</th><th>Name</th><th>DOB</th><th>Gender</th><th>Phone</th><th>Address</th><th>Blood Group</th><th>Actions</th></tr></thead><tbody id="patBody"></tbody></table>
                 </div>
             </div>
 
-            <!-- Visits Section -->
-            <div id="visits" class="section">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-3xl font-bold">Hospital Visits Log</h2>
-                    <div class="flex gap-3">
-                        <button onclick="downloadData('visits')" class="btn btn-success">
-                            <i class="fas fa-download"></i> Export
-                        </button>
-                        <button onclick="openModal('visitModal')" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Log Visit
-                        </button>
+            <!-- Admissions Section -->
+            <div id="admissions" class="section">
+                <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                    <h2 class="text-2xl font-bold">Admissions</h2>
+                    <div class="flex gap-2">
+                        <input type="text" id="searchAdm" placeholder="Search..." class="w-48" onkeyup="renderTable('admissions')">
+                        <button onclick="downloadCSV('admissions')" class="btn btn-success text-sm"><i class="fas fa-download"></i></button>
+                        <button onclick="openModal('admModal')" class="btn btn-primary text-sm"><i class="fas fa-plus mr-1"></i>Admit</button>
                     </div>
                 </div>
+                <div class="card overflow-x-auto">
+                    <table><thead><tr><th>Admission ID</th><th>Patient</th><th>Ward</th><th>Bed</th><th>Doctor</th><th>Date</th><th>Diagnosis</th><th>Status</th><th>Actions</th></tr></thead><tbody id="admBody"></tbody></table>
+                </div>
+            </div>
 
-                <div class="card p-6 mb-6">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="visitSearch" placeholder="Search visits..." onkeyup="filterTable('visitTable', 'visitSearch')">
+            <!-- OPD Section -->
+            <div id="opd" class="section">
+                <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                    <h2 class="text-2xl font-bold">Outpatient Department (OPD)</h2>
+                    <div class="flex gap-2">
+                        <input type="text" id="searchOpd" placeholder="Search..." class="w-48" onkeyup="renderTable('opd')">
+                        <button onclick="downloadCSV('opd')" class="btn btn-success text-sm"><i class="fas fa-download"></i></button>
+                        <button onclick="openModal('opdModal')" class="btn btn-primary text-sm"><i class="fas fa-plus mr-1"></i>New Visit</button>
                     </div>
                 </div>
+                <div class="card overflow-x-auto">
+                    <table><thead><tr><th>Visit ID</th><th>Patient</th><th>Department</th><th>Doctor</th><th>Date</th><th>Complaint</th><th>Diagnosis</th><th>Actions</th></tr></thead><tbody id="opdBody"></tbody></table>
+                </div>
+            </div>
 
-                <div class="card overflow-hidden">
-                    <div style="overflow-x: auto;">
-                        <table id="visitTable">
-                            <thead>
-                                <tr>
-                                    <th>Visit ID</th>
-                                    <th>Patient Name</th>
-                                    <th>Department</th>
-                                    <th>Doctor</th>
-                                    <th>Visit Date</th>
-                                    <th>Purpose</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="visitBody">
-                            </tbody>
-                        </table>
+            <!-- Pharmacy Section -->
+            <div id="pharmacy" class="section">
+                <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                    <h2 class="text-2xl font-bold">Pharmacy</h2>
+                    <div class="flex gap-2">
+                        <input type="text" id="searchPharm" placeholder="Search..." class="w-48" onkeyup="renderTable('pharmacy')">
+                        <button onclick="downloadCSV('pharmacy')" class="btn btn-success text-sm"><i class="fas fa-download"></i></button>
+                        <button onclick="openModal('pharmModal')" class="btn btn-primary text-sm"><i class="fas fa-plus mr-1"></i>Dispense</button>
                     </div>
+                </div>
+                <div class="card overflow-x-auto">
+                    <table><thead><tr><th>Rx ID</th><th>Patient</th><th>Medication</th><th>Dosage</th><th>Qty</th><th>Prescribed By</th><th>Date</th><th>Actions</th></tr></thead><tbody id="pharmBody"></tbody></table>
+                </div>
+            </div>
+
+            <!-- Child Health Section -->
+            <div id="childhealth" class="section">
+                <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                    <h2 class="text-2xl font-bold">Child Health Services</h2>
+                    <div class="flex gap-2">
+                        <input type="text" id="searchChild" placeholder="Search..." class="w-48" onkeyup="renderTable('childhealth')">
+                        <button onclick="downloadCSV('childhealth')" class="btn btn-success text-sm"><i class="fas fa-download"></i></button>
+                        <button onclick="openModal('childModal')" class="btn btn-primary text-sm"><i class="fas fa-plus mr-1"></i>Add Record</button>
+                    </div>
+                </div>
+                <div class="card overflow-x-auto">
+                    <table><thead><tr><th>Record ID</th><th>Child Name</th><th>DOB</th><th>Guardian</th><th>Service</th><th>Vaccine/Treatment</th><th>Date</th><th>Next Visit</th><th>Actions</th></tr></thead><tbody id="childBody"></tbody></table>
+                </div>
+            </div>
+
+            <!-- Dentistry Section -->
+            <div id="dentistry" class="section">
+                <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                    <h2 class="text-2xl font-bold">Dentistry</h2>
+                    <div class="flex gap-2">
+                        <input type="text" id="searchDent" placeholder="Search..." class="w-48" onkeyup="renderTable('dentistry')">
+                        <button onclick="downloadCSV('dentistry')" class="btn btn-success text-sm"><i class="fas fa-download"></i></button>
+                        <button onclick="openModal('dentModal')" class="btn btn-primary text-sm"><i class="fas fa-plus mr-1"></i>Add Record</button>
+                    </div>
+                </div>
+                <div class="card overflow-x-auto">
+                    <table><thead><tr><th>Visit ID</th><th>Patient</th><th>Procedure</th><th>Dentist</th><th>Date</th><th>Teeth</th><th>Notes</th><th>Actions</th></tr></thead><tbody id="dentBody"></tbody></table>
+                </div>
+            </div>
+
+            <!-- Transfers Section -->
+            <div id="transfers" class="section">
+                <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                    <h2 class="text-2xl font-bold">Patient Transfers</h2>
+                    <div class="flex gap-2">
+                        <input type="text" id="searchTrans" placeholder="Search..." class="w-48" onkeyup="renderTable('transfers')">
+                        <button onclick="downloadCSV('transfers')" class="btn btn-success text-sm"><i class="fas fa-download"></i></button>
+                        <button onclick="openModal('transModal')" class="btn btn-primary text-sm"><i class="fas fa-plus mr-1"></i>New Transfer</button>
+                    </div>
+                </div>
+                <div class="card overflow-x-auto">
+                    <table><thead><tr><th>Transfer ID</th><th>Patient</th><th>From</th><th>To</th><th>Reason</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody id="transBody"></tbody></table>
                 </div>
             </div>
 
             <!-- Employees Section -->
             <div id="employees" class="section">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-3xl font-bold">Employee Database</h2>
-                    <div class="flex gap-3">
-                        <button onclick="downloadData('employees')" class="btn btn-success">
-                            <i class="fas fa-download"></i> Export
-                        </button>
-                        <button onclick="openModal('employeeModal')" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Add Employee
-                        </button>
+                <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                    <h2 class="text-2xl font-bold">Staff Management</h2>
+                    <div class="flex gap-2">
+                        <input type="text" id="searchEmp" placeholder="Search..." class="w-48" onkeyup="renderTable('employees')">
+                        <button onclick="downloadCSV('employees')" class="btn btn-success text-sm"><i class="fas fa-download"></i></button>
+                        <button onclick="openModal('empModal')" class="btn btn-primary text-sm"><i class="fas fa-plus mr-1"></i>Add Staff</button>
                     </div>
                 </div>
-
-                <div class="card p-6 mb-6">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="employeeSearch" placeholder="Search employees..." onkeyup="filterTable('employeeTable', 'employeeSearch')">
-                    </div>
-                </div>
-
-                <div class="card overflow-hidden">
-                    <div style="overflow-x: auto;">
-                        <table id="employeeTable">
-                            <thead>
-                                <tr>
-                                    <th>Employee ID</th>
-                                    <th>Name</th>
-                                    <th>Role</th>
-                                    <th>Department</th>
-                                    <th>Contact</th>
-                                    <th>Hire Date</th>
-                                    <th>Salary</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="employeeBody">
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="card overflow-x-auto">
+                    <table><thead><tr><th>Staff ID</th><th>Name</th><th>Role</th><th>Department</th><th>Phone</th><th>Email</th><th>Hire Date</th><th>Actions</th></tr></thead><tbody id="empBody"></tbody></table>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 
+    <!-- Modals -->
     <!-- Inventory Modal -->
-    <div id="inventoryModal" class="modal">
+    <div id="invModal" class="modal">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold">Add Inventory Item</h3>
-                <button onclick="closeModal('inventoryModal')" class="text-2xl">&times;</button>
-            </div>
-            <form onsubmit="saveInventory(event)">
-                <div class="space-y-4">
-                    <input type="hidden" id="inv-id">
-                    <div>
-                        <label class="block mb-2 font-medium">Item Name</label>
-                        <input type="text" id="inv-name" required>
-                    </div>
-                    <div>
-                        <label class="block mb-2 font-medium">Category</label>
+            <div class="flex justify-between items-center mb-4"><h3 class="text-lg font-bold">Inventory Item</h3><button onclick="closeModal('invModal')" class="text-xl">&times;</button></div>
+            <form onsubmit="saveRecord(event,'inventory')">
+                <input type="hidden" id="inv-id">
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Item Code</label><input type="text" id="inv-code" required></div>
+                    <div><label class="block text-sm mb-1">Item Name</label><input type="text" id="inv-name" required></div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Category</label>
                         <select id="inv-category" required>
-                            <option value="">Select Category</option>
-                            <option value="Medical Supplies">Medical Supplies</option>
-                            <option value="Equipment">Equipment</option>
-                            <option value="Pharmaceuticals">Pharmaceuticals</option>
-                            <option value="Surgical">Surgical</option>
-                            <option value="PPE">PPE</option>
+                            <option value="">Select</option>
+                            <option>Pharmaceuticals</option><option>Medical Equipment</option><option>Surgical Supplies</option>
+                            <option>Laboratory Supplies</option><option>PPE</option><option>Consumables</option>
+                            <option>Diagnostic Equipment</option><option>Furniture</option><option>Linens</option><option>Cleaning Supplies</option>
                         </select>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block mb-2 font-medium">Quantity</label>
-                            <input type="number" id="inv-quantity" required min="0">
-                        </div>
-                        <div>
-                            <label class="block mb-2 font-medium">Unit Price ($)</label>
-                            <input type="number" step="0.01" id="inv-price" required min="0">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block mb-2 font-medium">Supplier</label>
-                        <input type="text" id="inv-supplier" required>
+                    <div><label class="block text-sm mb-1">Unit</label>
+                        <select id="inv-unit" required><option value="">Select</option><option>Pieces</option><option>Boxes</option><option>Packs</option><option>Bottles</option><option>Liters</option><option>Kg</option><option>Pairs</option><option>Sets</option></select>
                     </div>
                 </div>
-                <div class="flex gap-3 mt-6">
-                    <button type="submit" class="btn btn-primary flex-1">Save</button>
-                    <button type="button" onclick="closeModal('inventoryModal')" class="btn btn-danger">Cancel</button>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Quantity</label><input type="number" id="inv-qty" required min="0"></div>
+                    <div><label class="block text-sm mb-1">Min Stock Level</label><input type="number" id="inv-min" required min="0"></div>
                 </div>
+                <div class="flex gap-2 mt-4"><button type="submit" class="btn btn-primary flex-1">Save</button><button type="button" onclick="closeModal('invModal')" class="btn btn-secondary">Cancel</button></div>
             </form>
         </div>
     </div>
 
     <!-- Patient Modal -->
-    <div id="patientModal" class="modal">
+    <div id="patModal" class="modal">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold">Register Patient</h3>
-                <button onclick="closeModal('patientModal')" class="text-2xl">&times;</button>
-            </div>
-            <form onsubmit="savePatient(event)">
-                <div class="space-y-4">
-                    <input type="hidden" id="pat-id">
-                    <div>
-                        <label class="block mb-2 font-medium">Full Name</label>
-                        <input type="text" id="pat-name" required>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block mb-2 font-medium">Age</label>
-                            <input type="number" id="pat-age" required min="0" max="150">
-                        </div>
-                        <div>
-                            <label class="block mb-2 font-medium">Gender</label>
-                            <select id="pat-gender" required>
-                                <option value="">Select Gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block mb-2 font-medium">Contact Number</label>
-                        <input type="tel" id="pat-contact" required>
-                    </div>
-                    <div>
-                        <label class="block mb-2 font-medium">Admission Date</label>
-                        <input type="date" id="pat-admission" required>
-                    </div>
-                    <div>
-                        <label class="block mb-2 font-medium">Status</label>
-                        <select id="pat-status" required>
-                            <option value="Admitted">Admitted</option>
-                            <option value="Discharged">Discharged</option>
-                            <option value="Observation">Observation</option>
-                        </select>
-                    </div>
+            <div class="flex justify-between items-center mb-4"><h3 class="text-lg font-bold">Patient Registration</h3><button onclick="closeModal('patModal')" class="text-xl">&times;</button></div>
+            <form onsubmit="saveRecord(event,'patients')">
+                <input type="hidden" id="pat-id">
+                <div class="mb-3"><label class="block text-sm mb-1">Full Name</label><input type="text" id="pat-name" required></div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Date of Birth</label><input type="date" id="pat-dob" required></div>
+                    <div><label class="block text-sm mb-1">Gender</label><select id="pat-gender" required><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div>
                 </div>
-                <div class="flex gap-3 mt-6">
-                    <button type="submit" class="btn btn-primary flex-1">Save</button>
-                    <button type="button" onclick="closeModal('patientModal')" class="btn btn-danger">Cancel</button>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Phone</label><input type="tel" id="pat-phone" required></div>
+                    <div><label class="block text-sm mb-1">Blood Group</label><select id="pat-blood"><option value="">Unknown</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
                 </div>
+                <div class="mb-3"><label class="block text-sm mb-1">Address</label><textarea id="pat-address" rows="2"></textarea></div>
+                <div class="flex gap-2 mt-4"><button type="submit" class="btn btn-primary flex-1">Save</button><button type="button" onclick="closeModal('patModal')" class="btn btn-secondary">Cancel</button></div>
             </form>
         </div>
     </div>
 
-    <!-- Visit Modal -->
-    <div id="visitModal" class="modal">
+    <!-- Admissions Modal -->
+    <div id="admModal" class="modal">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold">Log Hospital Visit</h3>
-                <button onclick="closeModal('visitModal')" class="text-2xl">&times;</button>
-            </div>
-            <form onsubmit="saveVisit(event)">
-                <div class="space-y-4">
-                    <input type="hidden" id="vis-id">
-                    <div>
-                        <label class="block mb-2 font-medium">Patient Name</label>
-                        <input type="text" id="vis-patient" required>
-                    </div>
-                    <div>
-                        <label class="block mb-2 font-medium">Department</label>
-                        <select id="vis-department" required>
-                            <option value="">Select Department</option>
-                            <option value="Emergency">Emergency</option>
-                            <option value="Cardiology">Cardiology</option>
-                            <option value="Pediatrics">Pediatrics</option>
-                            <option value="Orthopedics">Orthopedics</option>
-                            <option value="General Medicine">General Medicine</option>
-                            <option value="Surgery">Surgery</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block mb-2 font-medium">Doctor Name</label>
-                        <input type="text" id="vis-doctor" required>
-                    </div>
-                    <div>
-                        <label class="block mb-2 font-medium">Visit Date</label>
-                        <input type="date" id="vis-date" required>
-                    </div>
-                    <div>
-                        <label class="block mb-2 font-medium">Purpose of Visit</label>
-                        <textarea id="vis-purpose" rows="3" required></textarea>
-                    </div>
+            <div class="flex justify-between items-center mb-4"><h3 class="text-lg font-bold">Patient Admission</h3><button onclick="closeModal('admModal')" class="text-xl">&times;</button></div>
+            <form onsubmit="saveRecord(event,'admissions')">
+                <input type="hidden" id="adm-id">
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Patient Name</label><input type="text" id="adm-patient" required></div>
+                    <div><label class="block text-sm mb-1">Admission Date</label><input type="date" id="adm-date" required></div>
                 </div>
-                <div class="flex gap-3 mt-6">
-                    <button type="submit" class="btn btn-primary flex-1">Save</button>
-                    <button type="button" onclick="closeModal('visitModal')" class="btn btn-danger">Cancel</button>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Ward</label><select id="adm-ward" required><option value="">Select</option><option>General Ward</option><option>Private Ward</option><option>ICU</option><option>Maternity</option><option>Pediatric</option><option>Surgical</option><option>Emergency</option></select></div>
+                    <div><label class="block text-sm mb-1">Bed Number</label><input type="text" id="adm-bed" required></div>
                 </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Attending Doctor</label><input type="text" id="adm-doctor" required></div>
+                    <div><label class="block text-sm mb-1">Status</label><select id="adm-status" required><option>Admitted</option><option>Discharged</option><option>Transferred</option><option>Critical</option></select></div>
+                </div>
+                <div class="mb-3"><label class="block text-sm mb-1">Diagnosis</label><textarea id="adm-diagnosis" rows="2" required></textarea></div>
+                <div class="flex gap-2 mt-4"><button type="submit" class="btn btn-primary flex-1">Save</button><button type="button" onclick="closeModal('admModal')" class="btn btn-secondary">Cancel</button></div>
             </form>
         </div>
     </div>
 
-    <!-- Employee Modal -->
-    <div id="employeeModal" class="modal">
+    <!-- OPD Modal -->
+    <div id="opdModal" class="modal">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold">Add Employee</h3>
-                <button onclick="closeModal('employeeModal')" class="text-2xl">&times;</button>
-            </div>
-            <form onsubmit="saveEmployee(event)">
-                <div class="space-y-4">
-                    <input type="hidden" id="emp-id">
-                    <div>
-                        <label class="block mb-2 font-medium">Full Name</label>
-                        <input type="text" id="emp-name" required>
-                    </div>
-                    <div>
-                        <label class="block mb-2 font-medium">Role</label>
-                        <select id="emp-role" required>
-                            <option value="">Select Role</option>
-                            <option value="Doctor">Doctor</option>
-                            <option value="Nurse">Nurse</option>
-                            <option value="Pharmacist">Pharmacist</option>
-                            <option value="Technician">Technician</option>
-                            <option value="Administrator">Administrator</option>
-                            <option value="Support Staff">Support Staff</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block mb-2 font-medium">Department</label>
-                        <select id="emp-department" required>
-                            <option value="">Select Department</option>
-                            <option value="Emergency">Emergency</option>
-                            <option value="Cardiology">Cardiology</option>
-                            <option value="Pediatrics">Pediatrics</option>
-                            <option value="Orthopedics">Orthopedics</option>
-                            <option value="General Medicine">General Medicine</option>
-                            <option value="Surgery">Surgery</option>
-                            <option value="Administration">Administration</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block mb-2 font-medium">Contact Number</label>
-                        <input type="tel" id="emp-contact" required>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block mb-2 font-medium">Hire Date</label>
-                            <input type="date" id="emp-hire" required>
-                        </div>
-                        <div>
-                            <label class="block mb-2 font-medium">Salary ($)</label>
-                            <input type="number" step="0.01" id="emp-salary" required min="0">
-                        </div>
-                    </div>
+            <div class="flex justify-between items-center mb-4"><h3 class="text-lg font-bold">OPD Visit</h3><button onclick="closeModal('opdModal')" class="text-xl">&times;</button></div>
+            <form onsubmit="saveRecord(event,'opd')">
+                <input type="hidden" id="opd-id">
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Patient Name</label><input type="text" id="opd-patient" required></div>
+                    <div><label class="block text-sm mb-1">Visit Date</label><input type="date" id="opd-date" required></div>
                 </div>
-                <div class="flex gap-3 mt-6">
-                    <button type="submit" class="btn btn-primary flex-1">Save</button>
-                    <button type="button" onclick="closeModal('employeeModal')" class="btn btn-danger">Cancel</button>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Department</label><select id="opd-dept" required><option value="">Select</option><option>General Medicine</option><option>Pediatrics</option><option>Gynecology</option><option>Orthopedics</option><option>ENT</option><option>Ophthalmology</option><option>Dermatology</option><option>Cardiology</option><option>Neurology</option></select></div>
+                    <div><label class="block text-sm mb-1">Doctor</label><input type="text" id="opd-doctor" required></div>
                 </div>
+                <div class="mb-3"><label class="block text-sm mb-1">Chief Complaint</label><input type="text" id="opd-complaint" required></div>
+                <div class="mb-3"><label class="block text-sm mb-1">Diagnosis</label><textarea id="opd-diagnosis" rows="2"></textarea></div>
+                <div class="flex gap-2 mt-4"><button type="submit" class="btn btn-primary flex-1">Save</button><button type="button" onclick="closeModal('opdModal')" class="btn btn-secondary">Cancel</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Pharmacy Modal -->
+    <div id="pharmModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4"><h3 class="text-lg font-bold">Pharmacy Dispensing</h3><button onclick="closeModal('pharmModal')" class="text-xl">&times;</button></div>
+            <form onsubmit="saveRecord(event,'pharmacy')">
+                <input type="hidden" id="pharm-id">
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Patient Name</label><input type="text" id="pharm-patient" required></div>
+                    <div><label class="block text-sm mb-1">Date</label><input type="date" id="pharm-date" required></div>
+                </div>
+                <div class="mb-3"><label class="block text-sm mb-1">Medication</label><input type="text" id="pharm-med" required></div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Dosage</label><input type="text" id="pharm-dosage" required placeholder="e.g., 500mg 3x daily"></div>
+                    <div><label class="block text-sm mb-1">Quantity</label><input type="number" id="pharm-qty" required min="1"></div>
+                </div>
+                <div class="mb-3"><label class="block text-sm mb-1">Prescribed By</label><input type="text" id="pharm-doctor" required></div>
+                <div class="flex gap-2 mt-4"><button type="submit" class="btn btn-primary flex-1">Save</button><button type="button" onclick="closeModal('pharmModal')" class="btn btn-secondary">Cancel</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Child Health Modal -->
+    <div id="childModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4"><h3 class="text-lg font-bold">Child Health Record</h3><button onclick="closeModal('childModal')" class="text-xl">&times;</button></div>
+            <form onsubmit="saveRecord(event,'childhealth')">
+                <input type="hidden" id="child-id">
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Child Name</label><input type="text" id="child-name" required></div>
+                    <div><label class="block text-sm mb-1">Date of Birth</label><input type="date" id="child-dob" required></div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Guardian Name</label><input type="text" id="child-guardian" required></div>
+                    <div><label class="block text-sm mb-1">Service Type</label><select id="child-service" required><option value="">Select</option><option>Vaccination</option><option>Growth Monitoring</option><option>Nutrition</option><option>General Checkup</option><option>Immunization</option></select></div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Vaccine/Treatment</label><input type="text" id="child-treatment"></div>
+                    <div><label class="block text-sm mb-1">Visit Date</label><input type="date" id="child-date" required></div>
+                </div>
+                <div class="mb-3"><label class="block text-sm mb-1">Next Visit Date</label><input type="date" id="child-next"></div>
+                <div class="flex gap-2 mt-4"><button type="submit" class="btn btn-primary flex-1">Save</button><button type="button" onclick="closeModal('childModal')" class="btn btn-secondary">Cancel</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dentistry Modal -->
+    <div id="dentModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4"><h3 class="text-lg font-bold">Dental Record</h3><button onclick="closeModal('dentModal')" class="text-xl">&times;</button></div>
+            <form onsubmit="saveRecord(event,'dentistry')">
+                <input type="hidden" id="dent-id">
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Patient Name</label><input type="text" id="dent-patient" required></div>
+                    <div><label class="block text-sm mb-1">Visit Date</label><input type="date" id="dent-date" required></div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Procedure</label><select id="dent-procedure" required><option value="">Select</option><option>Extraction</option><option>Filling</option><option>Root Canal</option><option>Cleaning</option><option>Crown</option><option>Braces</option><option>Checkup</option><option>X-Ray</option></select></div>
+                    <div><label class="block text-sm mb-1">Dentist</label><input type="text" id="dent-dentist" required></div>
+                </div>
+                <div class="mb-3"><label class="block text-sm mb-1">Teeth Affected</label><input type="text" id="dent-teeth" placeholder="e.g., Upper right molar"></div>
+                <div class="mb-3"><label class="block text-sm mb-1">Notes</label><textarea id="dent-notes" rows="2"></textarea></div>
+                <div class="flex gap-2 mt-4"><button type="submit" class="btn btn-primary flex-1">Save</button><button type="button" onclick="closeModal('dentModal')" class="btn btn-secondary">Cancel</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Transfers Modal -->
+    <div id="transModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4"><h3 class="text-lg font-bold">Patient Transfer</h3><button onclick="closeModal('transModal')" class="text-xl">&times;</button></div>
+            <form onsubmit="saveRecord(event,'transfers')">
+                <input type="hidden" id="trans-id">
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Patient Name</label><input type="text" id="trans-patient" required></div>
+                    <div><label class="block text-sm mb-1">Transfer Date</label><input type="date" id="trans-date" required></div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">From (Ward/Facility)</label><input type="text" id="trans-from" required></div>
+                    <div><label class="block text-sm mb-1">To (Ward/Facility)</label><input type="text" id="trans-to" required></div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Reason</label><input type="text" id="trans-reason" required></div>
+                    <div><label class="block text-sm mb-1">Status</label><select id="trans-status" required><option>Pending</option><option>In Transit</option><option>Completed</option><option>Cancelled</option></select></div>
+                </div>
+                <div class="flex gap-2 mt-4"><button type="submit" class="btn btn-primary flex-1">Save</button><button type="button" onclick="closeModal('transModal')" class="btn btn-secondary">Cancel</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Employees Modal -->
+    <div id="empModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4"><h3 class="text-lg font-bold">Staff Member</h3><button onclick="closeModal('empModal')" class="text-xl">&times;</button></div>
+            <form onsubmit="saveRecord(event,'employees')">
+                <input type="hidden" id="emp-id">
+                <div class="mb-3"><label class="block text-sm mb-1">Full Name</label><input type="text" id="emp-name" required></div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Role</label><select id="emp-role" required><option value="">Select</option><option>Doctor</option><option>Nurse</option><option>Pharmacist</option><option>Lab Technician</option><option>Radiologist</option><option>Dentist</option><option>Receptionist</option><option>Administrator</option><option>Cleaner</option><option>Security</option></select></div>
+                    <div><label class="block text-sm mb-1">Department</label><select id="emp-dept" required><option value="">Select</option><option>Administration</option><option>Emergency</option><option>General Medicine</option><option>Surgery</option><option>Pediatrics</option><option>OPD</option><option>Pharmacy</option><option>Laboratory</option><option>Radiology</option><option>Dentistry</option></select></div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div><label class="block text-sm mb-1">Phone</label><input type="tel" id="emp-phone" required></div>
+                    <div><label class="block text-sm mb-1">Email</label><input type="email" id="emp-email"></div>
+                </div>
+                <div class="mb-3"><label class="block text-sm mb-1">Hire Date</label><input type="date" id="emp-hire" required></div>
+                <div class="flex gap-2 mt-4"><button type="submit" class="btn btn-primary flex-1">Save</button><button type="button" onclick="closeModal('empModal')" class="btn btn-secondary">Cancel</button></div>
             </form>
         </div>
     </div>
 
     <script>
         // Authentication
-        const validCredentials = {
-            username: 'Tendai Manjeru',
-            password: 'admin'
-        };
-
-        let currentUser = null;
+        const credentials = { username: 'Tendai Manjeru', password: 'admin' };
 
         function handleLogin(e) {
             e.preventDefault();
-            const username = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
-            const errorDiv = document.getElementById('loginError');
-
-            if (username === validCredentials.username && password === validCredentials.password) {
-                currentUser = username;
-                document.getElementById('loggedInUser').textContent = username;
+            const u = document.getElementById('loginUsername').value;
+            const p = document.getElementById('loginPassword').value;
+            if (u === credentials.username && p === credentials.password) {
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('appContainer').classList.add('active');
-                errorDiv.classList.remove('show');
-
-                // Initialize app after successful login
-                loadData();
+                document.getElementById('loggedUser').textContent = u;
+                initApp();
             } else {
-                errorDiv.classList.add('show');
-                setTimeout(() => {
-                    errorDiv.classList.remove('show');
-                }, 3000);
+                document.getElementById('loginError').classList.remove('hidden');
+                setTimeout(() => document.getElementById('loginError').classList.add('hidden'), 3000);
             }
         }
 
         function handleLogout() {
-            showConfirmDialog('Are you sure you want to logout?', () => {
-                currentUser = null;
+            showConfirm('Logout?', () => {
                 document.getElementById('loginScreen').style.display = 'flex';
                 document.getElementById('appContainer').classList.remove('active');
                 document.getElementById('loginUsername').value = '';
@@ -1007,633 +531,333 @@
         }
 
         // Data Storage
-        let data = {
-            inventory: [],
-            patients: [],
-            visits: [],
-            employees: []
-        };
+        let db = { inventory: [], patients: [], admissions: [], opd: [], pharmacy: [], childhealth: [], dentistry: [], transfers: [], employees: [] };
+        let charts = {};
 
-        // Load data from memory (initialized on page load)
-        function loadData() {
-            // Initialize with sample data
-            initializeSampleData();
-            refreshAllTables();
+        function initApp() {
+            loadSampleData();
+            Object.keys(db).forEach(k => renderTable(k));
             updateDashboard();
         }
 
-        // Save data to memory and update UI
-        function saveData() {
-            // Data is already in memory, just update the dashboard
-            updateDashboard();
-        }
-
-        // Initialize with sample data
-        function initializeSampleData() {
-            data.inventory = [
-                { id: 1, name: 'Surgical Masks', category: 'PPE', quantity: 500, price: 0.50, supplier: 'MedSupply Co' },
-                { id: 2, name: 'Hand Sanitizer', category: 'Medical Supplies', quantity: 200, price: 5.99, supplier: 'HealthCare Inc' },
-                { id: 3, name: 'Stethoscope', category: 'Equipment', quantity: 25, price: 89.99, supplier: 'MedEquip Ltd' },
-                { id: 4, name: 'Paracetamol', category: 'Pharmaceuticals', quantity: 1000, price: 0.25, supplier: 'Pharma Solutions' },
-                { id: 5, name: 'Blood Pressure Monitor', category: 'Equipment', quantity: 15, price: 149.99, supplier: 'MedEquip Ltd' }
+        function loadSampleData() {
+            db.inventory = [
+                { id: 'INV001', code: 'MED001', name: 'Paracetamol 500mg', category: 'Pharmaceuticals', qty: 5000, unit: 'Pieces', min: 500 },
+                { id: 'INV002', code: 'MED002', name: 'Amoxicillin 250mg', category: 'Pharmaceuticals', qty: 3000, unit: 'Pieces', min: 300 },
+                { id: 'INV003', code: 'EQP001', name: 'Digital Thermometer', category: 'Medical Equipment', qty: 50, unit: 'Pieces', min: 10 },
+                { id: 'INV004', code: 'EQP002', name: 'Blood Pressure Monitor', category: 'Medical Equipment', qty: 25, unit: 'Pieces', min: 5 },
+                { id: 'INV005', code: 'SUR001', name: 'Surgical Gloves (Sterile)', category: 'Surgical Supplies', qty: 2000, unit: 'Pairs', min: 200 },
+                { id: 'INV006', code: 'SUR002', name: 'Suture Kit', category: 'Surgical Supplies', qty: 150, unit: 'Sets', min: 20 },
+                { id: 'INV007', code: 'PPE001', name: 'N95 Masks', category: 'PPE', qty: 1000, unit: 'Pieces', min: 100 },
+                { id: 'INV008', code: 'PPE002', name: 'Surgical Gowns', category: 'PPE', qty: 300, unit: 'Pieces', min: 50 },
+                { id: 'INV009', code: 'LAB001', name: 'Blood Collection Tubes', category: 'Laboratory Supplies', qty: 5000, unit: 'Pieces', min: 500 },
+                { id: 'INV010', code: 'LAB002', name: 'Urine Test Strips', category: 'Laboratory Supplies', qty: 2000, unit: 'Pieces', min: 200 },
+                { id: 'INV011', code: 'CON001', name: 'Syringes 5ml', category: 'Consumables', qty: 10000, unit: 'Pieces', min: 1000 },
+                { id: 'INV012', code: 'CON002', name: 'IV Cannula', category: 'Consumables', qty: 500, unit: 'Pieces', min: 50 },
+                { id: 'INV013', code: 'CON003', name: 'Bandages (Rolled)', category: 'Consumables', qty: 800, unit: 'Pieces', min: 100 },
+                { id: 'INV014', code: 'CON004', name: 'Cotton Wool 500g', category: 'Consumables', qty: 200, unit: 'Packs', min: 30 },
+                { id: 'INV015', code: 'DIA001', name: 'Pulse Oximeter', category: 'Diagnostic Equipment', qty: 30, unit: 'Pieces', min: 5 },
+                { id: 'INV016', code: 'LIN001', name: 'Hospital Bed Sheets', category: 'Linens', qty: 150, unit: 'Pieces', min: 30 },
+                { id: 'INV017', code: 'CLN001', name: 'Hand Sanitizer 500ml', category: 'Cleaning Supplies', qty: 100, unit: 'Bottles', min: 20 },
+                { id: 'INV018', code: 'MED003', name: 'Ibuprofen 400mg', category: 'Pharmaceuticals', qty: 4000, unit: 'Pieces', min: 400 }
             ];
 
-            data.patients = [
-                { id: 'P001', name: 'John Smith', age: 45, gender: 'Male', contact: '555-0101', admission: '2024-01-15', status: 'Admitted' },
-                { id: 'P002', name: 'Sarah Johnson', age: 32, gender: 'Female', contact: '555-0102', admission: '2024-01-16', status: 'Observation' },
-                { id: 'P003', name: 'Michael Brown', age: 67, gender: 'Male', contact: '555-0103', admission: '2024-01-10', status: 'Discharged' },
-                { id: 'P004', name: 'Emily Davis', age: 28, gender: 'Female', contact: '555-0104', admission: '2024-01-18', status: 'Admitted' }
+            db.patients = [
+                { id: 'PAT001', name: 'John Moyo', dob: '1985-03-15', gender: 'Male', phone: '0771234567', address: '12 Main St, Harare', blood: 'O+' },
+                { id: 'PAT002', name: 'Mary Ndlovu', dob: '1990-07-22', gender: 'Female', phone: '0772345678', address: '45 Oak Ave, Bulawayo', blood: 'A+' },
+                { id: 'PAT003', name: 'Peter Chigwedere', dob: '1978-11-08', gender: 'Male', phone: '0773456789', address: '78 River Rd, Mutare', blood: 'B+' },
+                { id: 'PAT004', name: 'Grace Muzenda', dob: '1995-05-30', gender: 'Female', phone: '0774567890', address: '23 Hill St, Gweru', blood: 'AB+' }
             ];
 
-            data.visits = [
-                { id: 'V001', patient: 'John Smith', department: 'Cardiology', doctor: 'Dr. Wilson', date: '2024-01-15', purpose: 'Chest pain evaluation' },
-                { id: 'V002', patient: 'Sarah Johnson', department: 'Pediatrics', doctor: 'Dr. Martinez', date: '2024-01-16', purpose: 'Child wellness check' },
-                { id: 'V003', patient: 'Michael Brown', department: 'Orthopedics', doctor: 'Dr. Lee', date: '2024-01-10', purpose: 'Hip replacement follow-up' },
-                { id: 'V004', patient: 'Emily Davis', department: 'Emergency', doctor: 'Dr. Patel', date: '2024-01-18', purpose: 'Acute abdominal pain' }
+            db.admissions = [
+                { id: 'ADM001', patient: 'John Moyo', date: '2024-01-15', ward: 'General Ward', bed: 'A-12', doctor: 'Dr. Sibanda', diagnosis: 'Pneumonia', status: 'Admitted' },
+                { id: 'ADM002', patient: 'Mary Ndlovu', date: '2024-01-16', ward: 'Maternity', bed: 'M-05', doctor: 'Dr. Chikwava', diagnosis: 'Labor & Delivery', status: 'Admitted' },
+                { id: 'ADM003', patient: 'Peter Chigwedere', date: '2024-01-10', ward: 'ICU', bed: 'ICU-02', doctor: 'Dr. Mpofu', diagnosis: 'Cardiac Arrest Recovery', status: 'Critical' }
             ];
 
-            data.employees = [
-                { id: 'E001', name: 'Dr. James Wilson', role: 'Doctor', department: 'Cardiology', contact: '555-1001', hire: '2020-03-15', salary: 180000 },
-                { id: 'E002', name: 'Dr. Maria Martinez', role: 'Doctor', department: 'Pediatrics', contact: '555-1002', hire: '2019-06-20', salary: 165000 },
-                { id: 'E003', name: 'Nurse Jennifer Lee', role: 'Nurse', department: 'Emergency', contact: '555-1003', hire: '2021-01-10', salary: 75000 },
-                { id: 'E004', name: 'Dr. Raj Patel', role: 'Doctor', department: 'Emergency', contact: '555-1004', hire: '2018-09-05', salary: 175000 }
+            db.opd = [
+                { id: 'OPD001', patient: 'Grace Muzenda', date: '2024-01-18', dept: 'General Medicine', doctor: 'Dr. Ncube', complaint: 'Persistent headache', diagnosis: 'Migraine' },
+                { id: 'OPD002', patient: 'John Moyo', date: '2024-01-12', dept: 'Cardiology', doctor: 'Dr. Mpofu', complaint: 'Chest pain', diagnosis: 'Angina' },
+                { id: 'OPD003', patient: 'Mary Ndlovu', date: '2024-01-14', dept: 'Gynecology', doctor: 'Dr. Chikwava', complaint: 'Prenatal checkup', diagnosis: 'Normal pregnancy' }
             ];
 
-            saveData();
+            db.pharmacy = [
+                { id: 'RX001', patient: 'John Moyo', date: '2024-01-15', med: 'Amoxicillin 500mg', dosage: '1 tablet 3x daily', qty: 21, doctor: 'Dr. Sibanda' },
+                { id: 'RX002', patient: 'Grace Muzenda', date: '2024-01-18', med: 'Ibuprofen 400mg', dosage: '1 tablet when needed', qty: 10, doctor: 'Dr. Ncube' },
+                { id: 'RX003', patient: 'Peter Chigwedere', date: '2024-01-10', med: 'Aspirin 100mg', dosage: '1 tablet daily', qty: 30, doctor: 'Dr. Mpofu' }
+            ];
+
+            db.childhealth = [
+                { id: 'CH001', name: 'Baby Moyo', dob: '2023-06-15', guardian: 'Sarah Moyo', service: 'Vaccination', treatment: 'BCG Vaccine', date: '2024-01-10', next: '2024-02-10' },
+                { id: 'CH002', name: 'Tinashe Ndlovu', dob: '2022-03-20', guardian: 'Mary Ndlovu', service: 'Growth Monitoring', treatment: 'Weight Check', date: '2024-01-15', next: '2024-02-15' }
+            ];
+
+            db.dentistry = [
+                { id: 'DEN001', patient: 'Grace Muzenda', date: '2024-01-17', procedure: 'Filling', dentist: 'Dr. Zimba', teeth: 'Lower left molar', notes: 'Composite filling applied' },
+                { id: 'DEN002', patient: 'John Moyo', date: '2024-01-11', procedure: 'Extraction', dentist: 'Dr. Zimba', teeth: 'Upper right wisdom tooth', notes: 'Impacted tooth removed' }
+            ];
+
+            db.transfers = [
+                { id: 'TRF001', patient: 'Peter Chigwedere', date: '2024-01-12', from: 'Emergency', to: 'ICU', reason: 'Critical condition', status: 'Completed' },
+                { id: 'TRF002', patient: 'John Moyo', date: '2024-01-16', from: 'ICU', to: 'General Ward', reason: 'Condition improved', status: 'Completed' }
+            ];
+
+            db.employees = [
+                { id: 'EMP001', name: 'Dr. Sibanda', role: 'Doctor', dept: 'General Medicine', phone: '0781234567', email: 'sibanda@paradise.co.zw', hire: '2020-03-15' },
+                { id: 'EMP002', name: 'Dr. Mpofu', role: 'Doctor', dept: 'Cardiology', phone: '0782345678', email: 'mpofu@paradise.co.zw', hire: '2019-06-20' },
+                { id: 'EMP003', name: 'Nurse Takura', role: 'Nurse', dept: 'Emergency', phone: '0783456789', email: 'takura@paradise.co.zw', hire: '2021-01-10' },
+                { id: 'EMP004', name: 'Dr. Zimba', role: 'Dentist', dept: 'Dentistry', phone: '0784567890', email: 'zimba@paradise.co.zw', hire: '2018-09-05' },
+                { id: 'EMP005', name: 'Dr. Chikwava', role: 'Doctor', dept: 'Gynecology', phone: '0785678901', email: 'chikwava@paradise.co.zw', hire: '2017-04-12' }
+            ];
         }
 
         // Navigation
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const section = item.getAttribute('data-section');
-
-                // Update nav
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                item.classList.add('active');
-
-                // Update sections
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-                document.getElementById(section).classList.add('active');
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.section).classList.add('active');
             });
         });
 
         // Modal functions
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
-            // Reset form if opening for new entry
-            const form = document.querySelector(`#${modalId} form`);
-            if (form) form.reset();
-        }
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); document.querySelector(`#${id} form`).reset(); }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-
-        // Inventory functions
-        function saveInventory(e) {
+        // Generic save function
+        function saveRecord(e, type) {
             e.preventDefault();
-            const id = document.getElementById('inv-id').value;
-            const item = {
-                id: id || Date.now(),
-                name: document.getElementById('inv-name').value,
-                category: document.getElementById('inv-category').value,
-                quantity: parseInt(document.getElementById('inv-quantity').value),
-                price: parseFloat(document.getElementById('inv-price').value),
-                supplier: document.getElementById('inv-supplier').value
-            };
+            const idField = document.getElementById(getPrefix(type) + '-id');
+            const isEdit = idField.value !== '';
+            const record = extractFormData(type);
 
-            if (id) {
-                const index = data.inventory.findIndex(i => i.id == id);
-                data.inventory[index] = item;
+            if (isEdit) {
+                const idx = db[type].findIndex(r => r.id === idField.value);
+                if (idx > -1) db[type][idx] = { ...db[type][idx], ...record };
             } else {
-                data.inventory.push(item);
+                record.id = generateId(type);
+                db[type].push(record);
             }
 
-            saveData();
-            refreshTable('inventory');
-            closeModal('inventoryModal');
+            closeModal(getModalId(type));
+            renderTable(type);
+            updateDashboard();
         }
 
-        function editInventory(id) {
-            const item = data.inventory.find(i => i.id == id);
-            document.getElementById('inv-id').value = item.id;
-            document.getElementById('inv-name').value = item.name;
-            document.getElementById('inv-category').value = item.category;
-            document.getElementById('inv-quantity').value = item.quantity;
-            document.getElementById('inv-price').value = item.price;
-            document.getElementById('inv-supplier').value = item.supplier;
-            openModal('inventoryModal');
+        function getPrefix(type) {
+            const prefixes = { inventory: 'inv', patients: 'pat', admissions: 'adm', opd: 'opd', pharmacy: 'pharm', childhealth: 'child', dentistry: 'dent', transfers: 'trans', employees: 'emp' };
+            return prefixes[type];
         }
 
-        function deleteInventory(id) {
-            showConfirmDialog('Are you sure you want to delete this item?', () => {
-                data.inventory = data.inventory.filter(i => i.id != id);
-                saveData();
-                refreshTable('inventory');
+        function getModalId(type) {
+            const modals = { inventory: 'invModal', patients: 'patModal', admissions: 'admModal', opd: 'opdModal', pharmacy: 'pharmModal', childhealth: 'childModal', dentistry: 'dentModal', transfers: 'transModal', employees: 'empModal' };
+            return modals[type];
+        }
+
+        function generateId(type) {
+            const prefixes = { inventory: 'INV', patients: 'PAT', admissions: 'ADM', opd: 'OPD', pharmacy: 'RX', childhealth: 'CH', dentistry: 'DEN', transfers: 'TRF', employees: 'EMP' };
+            return prefixes[type] + String(db[type].length + 1).padStart(3, '0');
+        }
+
+        function extractFormData(type) {
+            const p = getPrefix(type);
+            const data = {};
+            switch(type) {
+                case 'inventory': Object.assign(data, { code: gv(p+'-code'), name: gv(p+'-name'), category: gv(p+'-category'), qty: parseInt(gv(p+'-qty')), unit: gv(p+'-unit'), min: parseInt(gv(p+'-min')) }); break;
+                case 'patients': Object.assign(data, { name: gv(p+'-name'), dob: gv(p+'-dob'), gender: gv(p+'-gender'), phone: gv(p+'-phone'), address: gv(p+'-address'), blood: gv(p+'-blood') }); break;
+                case 'admissions': Object.assign(data, { patient: gv(p+'-patient'), date: gv(p+'-date'), ward: gv(p+'-ward'), bed: gv(p+'-bed'), doctor: gv(p+'-doctor'), diagnosis: gv(p+'-diagnosis'), status: gv(p+'-status') }); break;
+                case 'opd': Object.assign(data, { patient: gv(p+'-patient'), date: gv(p+'-date'), dept: gv(p+'-dept'), doctor: gv(p+'-doctor'), complaint: gv(p+'-complaint'), diagnosis: gv(p+'-diagnosis') }); break;
+                case 'pharmacy': Object.assign(data, { patient: gv(p+'-patient'), date: gv(p+'-date'), med: gv(p+'-med'), dosage: gv(p+'-dosage'), qty: parseInt(gv(p+'-qty')), doctor: gv(p+'-doctor') }); break;
+                case 'childhealth': Object.assign(data, { name: gv(p+'-name'), dob: gv(p+'-dob'), guardian: gv(p+'-guardian'), service: gv(p+'-service'), treatment: gv(p+'-treatment'), date: gv(p+'-date'), next: gv(p+'-next') }); break;
+                case 'dentistry': Object.assign(data, { patient: gv(p+'-patient'), date: gv(p+'-date'), procedure: gv(p+'-procedure'), dentist: gv(p+'-dentist'), teeth: gv(p+'-teeth'), notes: gv(p+'-notes') }); break;
+                case 'transfers': Object.assign(data, { patient: gv(p+'-patient'), date: gv(p+'-date'), from: gv(p+'-from'), to: gv(p+'-to'), reason: gv(p+'-reason'), status: gv(p+'-status') }); break;
+                case 'employees': Object.assign(data, { name: gv(p+'-name'), role: gv(p+'-role'), dept: gv(p+'-dept'), phone: gv(p+'-phone'), email: gv(p+'-email'), hire: gv(p+'-hire') }); break;
+            }
+            return data;
+        }
+
+        function gv(id) { return document.getElementById(id).value; }
+        function sv(id, val) { document.getElementById(id).value = val; }
+
+        function editRecord(type, id) {
+            const record = db[type].find(r => r.id === id);
+            if (!record) return;
+            const p = getPrefix(type);
+            sv(p + '-id', id);
+
+            switch(type) {
+                case 'inventory': sv(p+'-code', record.code); sv(p+'-name', record.name); sv(p+'-category', record.category); sv(p+'-qty', record.qty); sv(p+'-unit', record.unit); sv(p+'-min', record.min); break;
+                case 'patients': sv(p+'-name', record.name); sv(p+'-dob', record.dob); sv(p+'-gender', record.gender); sv(p+'-phone', record.phone); sv(p+'-address', record.address); sv(p+'-blood', record.blood); break;
+                case 'admissions': sv(p+'-patient', record.patient); sv(p+'-date', record.date); sv(p+'-ward', record.ward); sv(p+'-bed', record.bed); sv(p+'-doctor', record.doctor); sv(p+'-diagnosis', record.diagnosis); sv(p+'-status', record.status); break;
+                case 'opd': sv(p+'-patient', record.patient); sv(p+'-date', record.date); sv(p+'-dept', record.dept); sv(p+'-doctor', record.doctor); sv(p+'-complaint', record.complaint); sv(p+'-diagnosis', record.diagnosis); break;
+                case 'pharmacy': sv(p+'-patient', record.patient); sv(p+'-date', record.date); sv(p+'-med', record.med); sv(p+'-dosage', record.dosage); sv(p+'-qty', record.qty); sv(p+'-doctor', record.doctor); break;
+                case 'childhealth': sv(p+'-name', record.name); sv(p+'-dob', record.dob); sv(p+'-guardian', record.guardian); sv(p+'-service', record.service); sv(p+'-treatment', record.treatment); sv(p+'-date', record.date); sv(p+'-next', record.next); break;
+                case 'dentistry': sv(p+'-patient', record.patient); sv(p+'-date', record.date); sv(p+'-procedure', record.procedure); sv(p+'-dentist', record.dentist); sv(p+'-teeth', record.teeth); sv(p+'-notes', record.notes); break;
+                case 'transfers': sv(p+'-patient', record.patient); sv(p+'-date', record.date); sv(p+'-from', record.from); sv(p+'-to', record.to); sv(p+'-reason', record.reason); sv(p+'-status', record.status); break;
+                case 'employees': sv(p+'-name', record.name); sv(p+'-role', record.role); sv(p+'-dept', record.dept); sv(p+'-phone', record.phone); sv(p+'-email', record.email); sv(p+'-hire', record.hire); break;
+            }
+            openModal(getModalId(type));
+        }
+
+        function deleteRecord(type, id) {
+            showConfirm('Delete this record?', () => {
+                db[type] = db[type].filter(r => r.id !== id);
+                renderTable(type);
+                updateDashboard();
             });
         }
 
-        // Patient functions
-        function savePatient(e) {
-            e.preventDefault();
-            const id = document.getElementById('pat-id').value;
-            const patient = {
-                id: id || 'P' + String(data.patients.length + 1).padStart(3, '0'),
-                name: document.getElementById('pat-name').value,
-                age: parseInt(document.getElementById('pat-age').value),
-                gender: document.getElementById('pat-gender').value,
-                contact: document.getElementById('pat-contact').value,
-                admission: document.getElementById('pat-admission').value,
-                status: document.getElementById('pat-status').value
-            };
+        // Render tables
+        function renderTable(type) {
+            const searchId = { inventory: 'searchInv', patients: 'searchPat', admissions: 'searchAdm', opd: 'searchOpd', pharmacy: 'searchPharm', childhealth: 'searchChild', dentistry: 'searchDent', transfers: 'searchTrans', employees: 'searchEmp' };
+            const bodyId = { inventory: 'invBody', patients: 'patBody', admissions: 'admBody', opd: 'opdBody', pharmacy: 'pharmBody', childhealth: 'childBody', dentistry: 'dentBody', transfers: 'transBody', employees: 'empBody' };
 
-            if (id) {
-                const index = data.patients.findIndex(p => p.id === id);
-                data.patients[index] = patient;
-            } else {
-                data.patients.push(patient);
-            }
+            const search = document.getElementById(searchId[type])?.value.toLowerCase() || '';
+            const body = document.getElementById(bodyId[type]);
+            let filtered = db[type].filter(r => JSON.stringify(r).toLowerCase().includes(search));
 
-            saveData();
-            refreshTable('patients');
-            closeModal('patientModal');
-        }
+            const actions = (t, id) => `<button onclick="editRecord('${t}','${id}')" class="btn btn-primary text-xs mr-1"><i class="fas fa-edit"></i></button><button onclick="deleteRecord('${t}','${id}')" class="btn btn-danger text-xs"><i class="fas fa-trash"></i></button>`;
 
-        function editPatient(id) {
-            const patient = data.patients.find(p => p.id === id);
-            document.getElementById('pat-id').value = patient.id;
-            document.getElementById('pat-name').value = patient.name;
-            document.getElementById('pat-age').value = patient.age;
-            document.getElementById('pat-gender').value = patient.gender;
-            document.getElementById('pat-contact').value = patient.contact;
-            document.getElementById('pat-admission').value = patient.admission;
-            document.getElementById('pat-status').value = patient.status;
-            openModal('patientModal');
-        }
-
-        function deletePatient(id) {
-            showConfirmDialog('Are you sure you want to delete this patient record?', () => {
-                data.patients = data.patients.filter(p => p.id !== id);
-                saveData();
-                refreshTable('patients');
-            });
-        }
-
-        // Visit functions
-        function saveVisit(e) {
-            e.preventDefault();
-            const id = document.getElementById('vis-id').value;
-            const visit = {
-                id: id || 'V' + String(data.visits.length + 1).padStart(3, '0'),
-                patient: document.getElementById('vis-patient').value,
-                department: document.getElementById('vis-department').value,
-                doctor: document.getElementById('vis-doctor').value,
-                date: document.getElementById('vis-date').value,
-                purpose: document.getElementById('vis-purpose').value
-            };
-
-            if (id) {
-                const index = data.visits.findIndex(v => v.id === id);
-                data.visits[index] = visit;
-            } else {
-                data.visits.push(visit);
-            }
-
-            saveData();
-            refreshTable('visits');
-            closeModal('visitModal');
-        }
-
-        function editVisit(id) {
-            const visit = data.visits.find(v => v.id === id);
-            document.getElementById('vis-id').value = visit.id;
-            document.getElementById('vis-patient').value = visit.patient;
-            document.getElementById('vis-department').value = visit.department;
-            document.getElementById('vis-doctor').value = visit.doctor;
-            document.getElementById('vis-date').value = visit.date;
-            document.getElementById('vis-purpose').value = visit.purpose;
-            openModal('visitModal');
-        }
-
-        function deleteVisit(id) {
-            showConfirmDialog('Are you sure you want to delete this visit record?', () => {
-                data.visits = data.visits.filter(v => v.id !== id);
-                saveData();
-                refreshTable('visits');
-            });
-        }
-
-        // Employee functions
-        function saveEmployee(e) {
-            e.preventDefault();
-            const id = document.getElementById('emp-id').value;
-            const employee = {
-                id: id || 'E' + String(data.employees.length + 1).padStart(3, '0'),
-                name: document.getElementById('emp-name').value,
-                role: document.getElementById('emp-role').value,
-                department: document.getElementById('emp-department').value,
-                contact: document.getElementById('emp-contact').value,
-                hire: document.getElementById('emp-hire').value,
-                salary: parseFloat(document.getElementById('emp-salary').value)
-            };
-
-            if (id) {
-                const index = data.employees.findIndex(e => e.id === id);
-                data.employees[index] = employee;
-            } else {
-                data.employees.push(employee);
-            }
-
-            saveData();
-            refreshTable('employees');
-            closeModal('employeeModal');
-        }
-
-        function editEmployee(id) {
-            const employee = data.employees.find(e => e.id === id);
-            document.getElementById('emp-id').value = employee.id;
-            document.getElementById('emp-name').value = employee.name;
-            document.getElementById('emp-role').value = employee.role;
-            document.getElementById('emp-department').value = employee.department;
-            document.getElementById('emp-contact').value = employee.contact;
-            document.getElementById('emp-hire').value = employee.hire;
-            document.getElementById('emp-salary').value = employee.salary;
-            openModal('employeeModal');
-        }
-
-        function deleteEmployee(id) {
-            showConfirmDialog('Are you sure you want to delete this employee record?', () => {
-                data.employees = data.employees.filter(e => e.id !== id);
-                saveData();
-                refreshTable('employees');
-            });
-        }
-
-        // Refresh tables
-        function refreshTable(type) {
             switch(type) {
                 case 'inventory':
-                    const invBody = document.getElementById('inventoryBody');
-                    invBody.innerHTML = data.inventory.map(item => {
-                        const status = item.quantity < 50 ? 'Low Stock' : item.quantity < 100 ? 'Medium' : 'In Stock';
-                        const badge = item.quantity < 50 ? 'badge-danger' : item.quantity < 100 ? 'badge-warning' : 'badge-success';
-                        return `
-                            <tr>
-                                <td>${item.name}</td>
-                                <td>${item.category}</td>
-                                <td>${item.quantity}</td>
-                                <td>$${item.price.toFixed(2)}</td>
-                                <td>${item.supplier}</td>
-                                <td><span class="badge ${badge}">${status}</span></td>
-                                <td>
-                                    <button onclick="editInventory(${item.id})" class="btn btn-primary" style="padding: 0.25rem 0.75rem; margin-right: 0.5rem;">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button onclick="deleteInventory(${item.id})" class="btn btn-danger" style="padding: 0.25rem 0.75rem;">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        `;
+                    body.innerHTML = filtered.map(r => {
+                        const status = r.qty <= r.min ? 'Low Stock' : r.qty <= r.min * 2 ? 'Medium' : 'In Stock';
+                        const badge = r.qty <= r.min ? 'badge-danger' : r.qty <= r.min * 2 ? 'badge-warning' : 'badge-success';
+                        return `<tr><td>${r.code}</td><td>${r.name}</td><td>${r.category}</td><td>${r.qty}</td><td>${r.unit}</td><td>${r.min}</td><td><span class="badge ${badge}">${status}</span></td><td>${actions(type, r.id)}</td></tr>`;
                     }).join('');
                     break;
-
                 case 'patients':
-                    const patBody = document.getElementById('patientBody');
-                    patBody.innerHTML = data.patients.map(patient => {
-                        const badge = patient.status === 'Admitted' ? 'badge-info' : patient.status === 'Discharged' ? 'badge-success' : 'badge-warning';
-                        return `
-                            <tr>
-                                <td>${patient.id}</td>
-                                <td>${patient.name}</td>
-                                <td>${patient.age}</td>
-                                <td>${patient.gender}</td>
-                                <td>${patient.contact}</td>
-                                <td>${patient.admission}</td>
-                                <td><span class="badge ${badge}">${patient.status}</span></td>
-                                <td>
-                                    <button onclick="editPatient('${patient.id}')" class="btn btn-primary" style="padding: 0.25rem 0.75rem; margin-right: 0.5rem;">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button onclick="deletePatient('${patient.id}')" class="btn btn-danger" style="padding: 0.25rem 0.75rem;">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        `;
+                    body.innerHTML = filtered.map(r => `<tr><td>${r.id}</td><td>${r.name}</td><td>${r.dob}</td><td>${r.gender}</td><td>${r.phone}</td><td>${r.address}</td><td>${r.blood || '-'}</td><td>${actions(type, r.id)}</td></tr>`).join('');
+                    break;
+                case 'admissions':
+                    body.innerHTML = filtered.map(r => {
+                        const badge = r.status === 'Admitted' ? 'badge-info' : r.status === 'Discharged' ? 'badge-success' : r.status === 'Critical' ? 'badge-danger' : 'badge-warning';
+                        return `<tr><td>${r.id}</td><td>${r.patient}</td><td>${r.ward}</td><td>${r.bed}</td><td>${r.doctor}</td><td>${r.date}</td><td>${r.diagnosis}</td><td><span class="badge ${badge}">${r.status}</span></td><td>${actions(type, r.id)}</td></tr>`;
                     }).join('');
                     break;
-
-                case 'visits':
-                    const visBody = document.getElementById('visitBody');
-                    visBody.innerHTML = data.visits.map(visit => `
-                        <tr>
-                            <td>${visit.id}</td>
-                            <td>${visit.patient}</td>
-                            <td>${visit.department}</td>
-                            <td>${visit.doctor}</td>
-                            <td>${visit.date}</td>
-                            <td>${visit.purpose}</td>
-                            <td>
-                                <button onclick="editVisit('${visit.id}')" class="btn btn-primary" style="padding: 0.25rem 0.75rem; margin-right: 0.5rem;">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="deleteVisit('${visit.id}')" class="btn btn-danger" style="padding: 0.25rem 0.75rem;">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `).join('');
+                case 'opd':
+                    body.innerHTML = filtered.map(r => `<tr><td>${r.id}</td><td>${r.patient}</td><td>${r.dept}</td><td>${r.doctor}</td><td>${r.date}</td><td>${r.complaint}</td><td>${r.diagnosis || '-'}</td><td>${actions(type, r.id)}</td></tr>`).join('');
                     break;
-
+                case 'pharmacy':
+                    body.innerHTML = filtered.map(r => `<tr><td>${r.id}</td><td>${r.patient}</td><td>${r.med}</td><td>${r.dosage}</td><td>${r.qty}</td><td>${r.doctor}</td><td>${r.date}</td><td>${actions(type, r.id)}</td></tr>`).join('');
+                    break;
+                case 'childhealth':
+                    body.innerHTML = filtered.map(r => `<tr><td>${r.id}</td><td>${r.name}</td><td>${r.dob}</td><td>${r.guardian}</td><td>${r.service}</td><td>${r.treatment || '-'}</td><td>${r.date}</td><td>${r.next || '-'}</td><td>${actions(type, r.id)}</td></tr>`).join('');
+                    break;
+                case 'dentistry':
+                    body.innerHTML = filtered.map(r => `<tr><td>${r.id}</td><td>${r.patient}</td><td>${r.procedure}</td><td>${r.dentist}</td><td>${r.date}</td><td>${r.teeth || '-'}</td><td>${r.notes || '-'}</td><td>${actions(type, r.id)}</td></tr>`).join('');
+                    break;
+                case 'transfers':
+                    body.innerHTML = filtered.map(r => {
+                        const badge = r.status === 'Completed' ? 'badge-success' : r.status === 'In Transit' ? 'badge-info' : r.status === 'Cancelled' ? 'badge-danger' : 'badge-warning';
+                        return `<tr><td>${r.id}</td><td>${r.patient}</td><td>${r.from}</td><td>${r.to}</td><td>${r.reason}</td><td>${r.date}</td><td><span class="badge ${badge}">${r.status}</span></td><td>${actions(type, r.id)}</td></tr>`;
+                    }).join('');
+                    break;
                 case 'employees':
-                    const empBody = document.getElementById('employeeBody');
-                    empBody.innerHTML = data.employees.map(employee => `
-                        <tr>
-                            <td>${employee.id}</td>
-                            <td>${employee.name}</td>
-                            <td>${employee.role}</td>
-                            <td>${employee.department}</td>
-                            <td>${employee.contact}</td>
-                            <td>${employee.hire}</td>
-                            <td>$${employee.salary.toLocaleString()}</td>
-                            <td>
-                                <button onclick="editEmployee('${employee.id}')" class="btn btn-primary" style="padding: 0.25rem 0.75rem; margin-right: 0.5rem;">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="deleteEmployee('${employee.id}')" class="btn btn-danger" style="padding: 0.25rem 0.75rem;">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `).join('');
+                    body.innerHTML = filtered.map(r => `<tr><td>${r.id}</td><td>${r.name}</td><td>${r.role}</td><td>${r.dept}</td><td>${r.phone}</td><td>${r.email || '-'}</td><td>${r.hire}</td><td>${actions(type, r.id)}</td></tr>`).join('');
                     break;
             }
         }
 
-        function refreshAllTables() {
-            refreshTable('inventory');
-            refreshTable('patients');
-            refreshTable('visits');
-            refreshTable('employees');
+        // Dashboard
+        function updateDashboard() {
+            document.getElementById('stat-inv').textContent = db.inventory.length;
+            document.getElementById('stat-pat').textContent = db.patients.length;
+            document.getElementById('stat-adm').textContent = db.admissions.filter(a => a.status === 'Admitted' || a.status === 'Critical').length;
+            document.getElementById('stat-opd').textContent = db.opd.length;
+            document.getElementById('stat-pharm').textContent = db.pharmacy.length;
+            document.getElementById('stat-emp').textContent = db.employees.length;
+            updateCharts();
         }
 
-        // Search/Filter
-        function filterTable(tableId, searchId) {
-            const input = document.getElementById(searchId).value.toLowerCase();
-            const table = document.getElementById(tableId);
-            const rows = table.getElementsByTagName('tr');
+        function updateCharts() {
+            const colors = ['#374151', '#4b5563', '#6b7280', '#9ca3af', '#1f2937', '#111827', '#d1d5db'];
 
-            for (let i = 1; i < rows.length; i++) {
-                const row = rows[i];
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(input) ? '' : 'none';
-            }
+            // Inventory by category
+            const invCat = {};
+            db.inventory.forEach(i => invCat[i.category] = (invCat[i.category] || 0) + i.qty);
+            renderChart('chartInventory', 'doughnut', Object.keys(invCat), Object.values(invCat), colors);
+
+            // Admissions by month
+            const admMonth = {};
+            db.admissions.forEach(a => { const m = a.date.substring(0, 7); admMonth[m] = (admMonth[m] || 0) + 1; });
+            renderChart('chartAdmissions', 'bar', Object.keys(admMonth).sort(), Object.keys(admMonth).sort().map(k => admMonth[k]), ['#374151']);
+
+            // OPD by department
+            const opdDept = {};
+            db.opd.forEach(o => opdDept[o.dept] = (opdDept[o.dept] || 0) + 1);
+            renderChart('chartOPD', 'pie', Object.keys(opdDept), Object.values(opdDept), colors);
+
+            // Staff by role
+            const empRole = {};
+            db.employees.forEach(e => empRole[e.role] = (empRole[e.role] || 0) + 1);
+            renderChart('chartStaff', 'pie', Object.keys(empRole), Object.values(empRole), colors);
+
+            // Pharmacy
+            const pharmMed = {};
+            db.pharmacy.forEach(p => pharmMed[p.med] = (pharmMed[p.med] || 0) + p.qty);
+            renderChart('chartPharmacy', 'bar', Object.keys(pharmMed), Object.values(pharmMed), ['#4b5563']);
+        }
+
+        function renderChart(id, type, labels, data, colors) {
+            if (charts[id]) charts[id].destroy();
+            const ctx = document.getElementById(id);
+            charts[id] = new Chart(ctx, {
+                type: type,
+                data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderColor: type === 'bar' ? colors[0] : undefined, borderWidth: type === 'bar' ? 0 : 1 }] },
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: type !== 'bar', position: 'bottom' } } }
+            });
         }
 
         // Download functions
-        function downloadData(type) {
-            let csvContent = '';
-            let filename = '';
+        function downloadCSV(type) {
+            let csv = '';
+            const headers = {
+                inventory: ['ID','Code','Name','Category','Quantity','Unit','Min Stock'],
+                patients: ['ID','Name','DOB','Gender','Phone','Address','Blood Group'],
+                admissions: ['ID','Patient','Date','Ward','Bed','Doctor','Diagnosis','Status'],
+                opd: ['ID','Patient','Date','Department','Doctor','Complaint','Diagnosis'],
+                pharmacy: ['ID','Patient','Date','Medication','Dosage','Quantity','Doctor'],
+                childhealth: ['ID','Name','DOB','Guardian','Service','Treatment','Date','Next Visit'],
+                dentistry: ['ID','Patient','Date','Procedure','Dentist','Teeth','Notes'],
+                transfers: ['ID','Patient','Date','From','To','Reason','Status'],
+                employees: ['ID','Name','Role','Department','Phone','Email','Hire Date']
+            };
+            csv = headers[type].join(',') + '\n';
+            db[type].forEach(r => {
+                const row = Object.values(r).map(v => `"${v}"`).join(',');
+                csv += row + '\n';
+            });
+            downloadFile(csv, `${type}_data.csv`, 'text/csv');
+        }
 
-            switch(type) {
-                case 'inventory':
-                    csvContent = 'ID,Name,Category,Quantity,Price,Supplier\n';
-                    data.inventory.forEach(item => {
-                        csvContent += `${item.id},"${item.name}","${item.category}",${item.quantity},${item.price},"${item.supplier}"\n`;
-                    });
-                    filename = 'inventory_data.csv';
-                    break;
+        function downloadAllData() {
+            const allData = { ...db, exportDate: new Date().toISOString(), hospital: 'Paradise Hospital' };
+            downloadFile(JSON.stringify(allData, null, 2), 'paradise_hospital_data.json', 'application/json');
+        }
 
-                case 'patients':
-                    csvContent = 'ID,Name,Age,Gender,Contact,Admission Date,Status\n';
-                    data.patients.forEach(patient => {
-                        csvContent += `${patient.id},"${patient.name}",${patient.age},"${patient.gender}","${patient.contact}","${patient.admission}","${patient.status}"\n`;
-                    });
-                    filename = 'patient_data.csv';
-                    break;
-
-                case 'visits':
-                    csvContent = 'ID,Patient,Department,Doctor,Date,Purpose\n';
-                    data.visits.forEach(visit => {
-                        csvContent += `${visit.id},"${visit.patient}","${visit.department}","${visit.doctor}","${visit.date}","${visit.purpose}"\n`;
-                    });
-                    filename = 'visits_data.csv';
-                    break;
-
-                case 'employees':
-                    csvContent = 'ID,Name,Role,Department,Contact,Hire Date,Salary\n';
-                    data.employees.forEach(employee => {
-                        csvContent += `${employee.id},"${employee.name}","${employee.role}","${employee.department}","${employee.contact}","${employee.hire}",${employee.salary}\n`;
-                    });
-                    filename = 'employee_data.csv';
-                    break;
-            }
-
-            const blob = new Blob([csvContent], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
+        function downloadFile(content, filename, type) {
+            const blob = new Blob([content], { type: type });
+            const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = filename;
             a.click();
-            window.URL.revokeObjectURL(url);
+            URL.revokeObjectURL(url);
         }
 
-        function downloadAllData() {
-            const allData = {
-                inventory: data.inventory,
-                patients: data.patients,
-                visits: data.visits,
-                employees: data.employees,
-                exportDate: new Date().toISOString()
-            };
-
-            const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'hospital_complete_data.json';
-            a.click();
-            window.URL.revokeObjectURL(url);
-        }
-
-        // Dashboard updates
-        function updateDashboard() {
-            document.getElementById('stat-inventory').textContent = data.inventory.length;
-            document.getElementById('stat-patients').textContent = data.patients.length;
-            document.getElementById('stat-visits').textContent = data.visits.length;
-            document.getElementById('stat-employees').textContent = data.employees.length;
-
-            updateCharts();
-        }
-
-        // Charts
-        let charts = {};
-
-        function updateCharts() {
-            // Inventory Chart
-            const inventoryCtx = document.getElementById('inventoryChart');
-            if (charts.inventory) charts.inventory.destroy();
-
-            const categories = {};
-            data.inventory.forEach(item => {
-                categories[item.category] = (categories[item.category] || 0) + item.quantity;
-            });
-
-            charts.inventory = new Chart(inventoryCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: Object.keys(categories),
-                    datasets: [{
-                        data: Object.values(categories),
-                        backgroundColor: ['#374151', '#4b5563', '#6b7280', '#9ca3af', '#1f2937']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
-
-            // Admissions Chart
-            const admissionsCtx = document.getElementById('admissionsChart');
-            if (charts.admissions) charts.admissions.destroy();
-
-            const admissionsByMonth = {};
-            data.patients.forEach(patient => {
-                const month = patient.admission.substring(0, 7);
-                admissionsByMonth[month] = (admissionsByMonth[month] || 0) + 1;
-            });
-
-            charts.admissions = new Chart(admissionsCtx, {
-                type: 'line',
-                data: {
-                    labels: Object.keys(admissionsByMonth).sort(),
-                    datasets: [{
-                        label: 'Patient Admissions',
-                        data: Object.keys(admissionsByMonth).sort().map(k => admissionsByMonth[k]),
-                        borderColor: '#374151',
-                        backgroundColor: 'rgba(55, 65, 81, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    }
-                }
-            });
-
-            // Visits Chart
-            const visitsCtx = document.getElementById('visitsChart');
-            if (charts.visits) charts.visits.destroy();
-
-            const visitsByDept = {};
-            data.visits.forEach(visit => {
-                visitsByDept[visit.department] = (visitsByDept[visit.department] || 0) + 1;
-            });
-
-            charts.visits = new Chart(visitsCtx, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(visitsByDept),
-                    datasets: [{
-                        label: 'Visits',
-                        data: Object.values(visitsByDept),
-                        backgroundColor: '#4b5563'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    }
-                }
-            });
-
-            // Employee Chart
-            const employeeCtx = document.getElementById('employeeChart');
-            if (charts.employee) charts.employee.destroy();
-
-            const empByRole = {};
-            data.employees.forEach(emp => {
-                empByRole[emp.role] = (empByRole[emp.role] || 0) + 1;
-            });
-
-            charts.employee = new Chart(employeeCtx, {
-                type: 'pie',
-                data: {
-                    labels: Object.keys(empByRole),
-                    datasets: [{
-                        data: Object.values(empByRole),
-                        backgroundColor: ['#374151', '#4b5563', '#6b7280', '#9ca3af', '#1f2937', '#111827']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
-        }
-
-        // Dark mode
-        function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
-        }
-
-        // Custom confirm dialog
-        function showConfirmDialog(message, onConfirm) {
+        // Confirm dialog
+        function showConfirm(msg, onConfirm) {
             const modal = document.createElement('div');
             modal.className = 'modal active';
-            modal.innerHTML = `
-                <div class="modal-content" style="max-width: 400px;">
-                    <h3 class="text-xl font-semibold mb-4">Confirm Action</h3>
-                    <p class="mb-6">${message}</p>
-                    <div class="flex gap-3">
-                        <button class="btn btn-danger flex-1" onclick="this.closest('.modal').remove(); (${onConfirm})()">Confirm</button>
-                        <button class="btn btn-primary flex-1" onclick="this.closest('.modal').remove()">Cancel</button>
-                    </div>
-                </div>
-            `;
+            modal.innerHTML = `<div class="modal-content" style="max-width:350px;text-align:center"><p class="mb-4">${msg}</p><div class="flex gap-2 justify-center"><button class="btn btn-danger" onclick="this.closest('.modal').remove();(${onConfirm})()">Yes</button><button class="btn btn-secondary" onclick="this.closest('.modal').remove()">No</button></div></div>`;
             document.body.appendChild(modal);
         }
 
-        // Mobile menu
-        document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
-            document.querySelector('.sidebar').classList.toggle('active');
-        });
-
-        // Initialize
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-        }
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            if (event.matches) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        });
-
-        // Don't load data until logged in - login handler will call loadData()
+        // Dark mode
+        function toggleDark() { document.documentElement.classList.toggle('dark'); }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark');
     </script>
 </body>
 </html>
